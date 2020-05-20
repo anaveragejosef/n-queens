@@ -163,7 +163,6 @@
     },
 
 
-
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
     //
@@ -215,6 +214,30 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+      var board = this.rows();
+      // loop through each row array
+      // Existing half
+      if (minorDiagonalColumnIndexAtFirstRow < board.length) {
+        var limit = minorDiagonalColumnIndexAtFirstRow;
+      }
+      // "Non-existing" half
+      if (minorDiagonalColumnIndexAtFirstRow >= board.length) {
+        var limit = board.length;
+      }
+
+      // Function for existing half
+      var counter = 0;
+      for (var i = 0; i < limit; i++) {
+        var diagonal = board[i][minorDiagonalColumnIndexAtFirstRow];
+        if (diagonal === 1) {
+          counter++;
+          if (counter === 2) {
+            return true;
+          }
+        }
+        minorDiagonalColumnIndexAtFirstRow--;
+        console.log(minorDiagonalColumnIndexAtFirstRow, 'line 239');
+      }
       return false; // fixme
     },
 
