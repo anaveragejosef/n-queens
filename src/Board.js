@@ -79,11 +79,17 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
+      // Set a counter for conflicts
       var count = 0;
+      // Get the row we have the index for
       var row = this.get(rowIndex);
+      // Loop through this row
       for (var i = 0; i < row.length; i++) {
+        // If there is an item
         if (row[i] === 1) {
+          // Add to the counter
           count++;
+          // If the counter reaches 2, return true
           if (count === 2) {
             return true;
           }
@@ -94,13 +100,19 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      var count = 0;
+      // Get the array of arrays we are looking at
       var board = this.rows();
+      // Iterate through the rows
       for (var r = 0; r < board.length; r++) {
         var row = board[r];
+        // Set a counter for conflicts
+        var count = 0;
+        // Iterate through the columns
         for (var c = 0; c < row.length; c++) {
+          // If row has an item flag
           if (row[c] === 1) {
             count++;
+            // If it has two, then mark as true
             if (count === 2) {
               return true;
             }
