@@ -215,10 +215,11 @@
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       var board = this.rows();
+      // console.log(minorDiagonalColumnIndexAtFirstRow, 'line 218')
       // loop through each row array
       // Existing half
       if (minorDiagonalColumnIndexAtFirstRow < board.length) {
-        var limit = minorDiagonalColumnIndexAtFirstRow;
+        var limit = minorDiagonalColumnIndexAtFirstRow + 1;
       }
       // "Non-existing" half
       if (minorDiagonalColumnIndexAtFirstRow >= board.length) {
@@ -228,7 +229,18 @@
       // Function for existing half
       var counter = 0;
       for (var i = 0; i < limit; i++) {
+        // if statements
+        if (minorDiagonalColumnIndexAtFirstRow > board.length - 1) {
+          minorDiagonalColumnIndexAtFirstRow--;
+          // console.log(minorDiagonalColumnIndexAtFirstRow, 'line 236')
+          continue;
+        }
+        // console.log(board, 'line 238')
+        // console.log(i, 'line xx')
+        // console.log(board[i], 'line 239')
+        // console.log(board[i][minorDiagonalColumnIndexAtFirstRow], 'line 240')
         var diagonal = board[i][minorDiagonalColumnIndexAtFirstRow];
+
         if (diagonal === 1) {
           counter++;
           if (counter === 2) {
@@ -236,13 +248,23 @@
           }
         }
         minorDiagonalColumnIndexAtFirstRow--;
-        console.log(minorDiagonalColumnIndexAtFirstRow, 'line 239');
+        // console.log(minorDiagonalColumnIndexAtFirstRow, 'line 239');
       }
       return false; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+      var board = this.rows();
+      // Set limit for iteration
+      var limit = (board.length - 1 ) * 2;
+      // Iterate through board
+      for (var i = 0; i < limit; i++) {
+        var indexVar = i;
+        if (this.hasMinorDiagonalConflictAt(indexVar) === true) {
+          return true;
+        }
+      }
       return false; // fixme
     }
 
