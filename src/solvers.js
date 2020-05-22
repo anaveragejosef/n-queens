@@ -121,10 +121,77 @@ window.countNRooksSolutions = function(n) {
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
   var solution = undefined; //fixme
+  var temp = [];
+  if (n === 1) {
+    return [[1]];
+  }
+
+  if (n === 0 || n === 2 || n === 3) {
+    // empty board of n x n
+    console.log('we in here line 138');
+    return recursiveBoard.rows();
+  }
+
+  // LOOP THROUGH BOARD
+  var recursiveBoard = new Board({n: n});
+  console.log(recursiveBoard.rows(), 'line 127');
+  var createGoodBoard = function (rowIndex) {
+    console.log(recursiveBoard.rows(), 'line 128');
+    // BASE CASE
+    if (rowIndex === n) {
+      temp.push(recursiveBoard.rows());
+      console.log(temp, 'line 133');
+      return false;
+    }
+
+    // loop thru row array --> access to each column
+    // Iterate through each column
+    for (var i = 0; i < n; i++) {
+      console.log(recursiveBoard.rows(), 'line 149');
+      // Toggle at this space variable
+      // debugger;
+      var colIndex = i;
+      recursiveBoard.togglePiece(rowIndex, colIndex);
+      // console.log(rowIndex, 'line 151'); // rowIndex = 1
+      // console.log(i, 'line 152'); // i = 3
+      console.log(recursiveBoard.rows(), 'line 153'); // empty 4 x 4
+      // Check if valid with helper functions
+      // if board has no conflicts
+      if (recursiveBoard.hasAnyQueensConflicts() !== true) {
+        // If so, maintain toggle (do nothing)
+        // console.log(i, 'line 157');
+        // if statement - if current row array === 1
+        // Move to next row (rowIndex + 1)
+        createGoodBoard(rowIndex + 1);
+        // When returning from recursion, untoggle
+        recursiveBoard.togglePiece(rowIndex, i);
+        // If not, untoggle and move to next column
+        // console.log(recursiveBoard.rows(), 'line 106');
+      } else {
+        // untoggle if there is a conflict
+        recursiveBoard.togglePiece(rowIndex, i);
+        // continue w/ next column element (next i for loop)
+      }
+      // if the current row is empty, return back to before error
+
+    }
+  };
+  // if (n === 0) {
+  //   solution = 0;
+  // } else if (n === 1) {
+  //   solution = [[1]];
+  // } else if (n === 2 || n === 3) {
+  //   // empty board of n x n
+  //   console.log('we in here line 138');
+  //   solution = recursiveBoard.rows();
+  createGoodBoard(0);
+  solution = temp[0];
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
 };
+
+console.log(findNQueensSolution(4), 'line 175');
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
