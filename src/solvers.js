@@ -25,7 +25,6 @@ window.findNRooksSolution = function(n) {
   // IOCE
   // I - row array
   // O - board completed
-
   // Create a function that would take the row array as an input and then iterate through all of the columns. For each column, toggle the piece and check if it passes the test. If it does, call the funciton on the next row
   var recursiveBoard = new Board({n: n});
   var createGoodBoard = function (row, rowIndex) {
@@ -62,18 +61,62 @@ window.findNRooksSolution = function(n) {
   return solution;
 };
 
-// O - count for number of valid solutions
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
-window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
-  // counter
-  var counter = 0;
-  // Declare counter, if the helper function fail - increment counter
-  // return counter
 
+// IOCE
+// I - n
+// O - # of valid boards
+// C -
+// E - n < 3, return n
+window.countNRooksSolutions = function(n) {
+  // edge cases
+  // if (n === 0) {
+  //   return 1;
+  // }
+  // if (n < 3) {
+  //   return n;
+  // }
+  var solutionCount = undefined; //fixme
+  var validBoards = [];
+
+  // LOOP THROUGH BOARD
+  var recursiveBoard = new Board({n: n});
+  var createGoodBoard = function (rowIndex) {
+    // BASE CASE
+    if (rowIndex === n) {
+      // console.log(recursiveBoard.rows(), 'line 88');
+      validBoards.push(recursiveBoard.rows());
+      return;
+    }
+
+    // loop thru row array --> access to each column
+    // Iterate through each column
+    for (var i = 0; i < n; i++) {
+      // Toggle at this space variable
+      recursiveBoard.togglePiece(rowIndex, i);
+      // console.log(recursiveBoard.rows(), "line 97")
+      // Check if valid with helper functions
+      if (!recursiveBoard.hasAnyRooksConflicts()) {
+        // If so, maintain toggle (do nothing)
+        // Move to next row (rowIndex + 1)
+        createGoodBoard(rowIndex + 1);
+        // When returning from recursion, untoggle
+        recursiveBoard.togglePiece(rowIndex, i);
+        // If not, untoggle and move to next column
+        // console.log(recursiveBoard.rows(), 'line 106');
+      } else {
+        // untoggle
+        recursiveBoard.togglePiece(rowIndex, i);
+      }
+    }
+  };
+  createGoodBoard(0);
+  var counter = validBoards.length;
+  solutionCount = counter;
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
+
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
